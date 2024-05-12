@@ -15,9 +15,9 @@
   croppedImage: '',
   cropper: null,
   darkMode: false,
-  aspectRatio: 16 / 9,
+  aspectRatio: 1,
   width: 800,
-  height: 400,
+  height: 800,
   x: 0,
   y: 0,
   updateCropper: function() {
@@ -29,6 +29,11 @@
             height: this.height
         });
         this.cropper.setAspectRatio(this.aspectRatio);
+    }
+  },
+  rotate: function(degree) {
+    if (this.cropper) {
+        this.cropper.rotate(degree);
     }
   },
   onFileChange(e) {
@@ -66,6 +71,16 @@
       this.cropper.reset();
     }
   },
+  flipHorizontal: function() {
+    if (this.cropper) {
+        this.cropper.scaleX(-this.cropper.getData().scaleX);
+    }
+},
+flipVertical: function() {
+    if (this.cropper) {
+        this.cropper.scaleY(-this.cropper.getData().scaleY);
+    }
+},
   toggleTheme() {
     this.darkMode = !this.darkMode;
     document.documentElement.classList.toggle('dark', this.darkMode);
@@ -162,6 +177,34 @@
           <input type="number" class="w-full" x-model="y" @change="updateCropper" />
         </div>
       </div> -->
+
+      <div class="flex items-center space-x-4 w-full flex-col">
+        <span class="text-lg font-bold">
+          Flip Image
+        </span>
+        <div class="flex items-center space-x-4 w-full mt-2">
+          <button @click="flipHorizontal"
+            class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 w-full">Flip Horizontal</button>
+          <button @click="flipVertical"
+            class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 w-full">Flip Vertical</button>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-center gap-2 w-full flex-col">
+        <span class="text-lg font-bold">
+          Rotate Image
+        </span>
+        <div class="flex items-center space-x-4 w-full">
+          <button @click="rotate(-90)"
+            class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 w-full">
+            Anti-Clockwise
+          </button>
+          <button @click="rotate(90)"
+            class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 w-full">
+            Clockwise
+          </button>
+        </div>
+      </div>
 
       <div class="flex items-center space-x-4 w-full">
         <button @click="crop"
